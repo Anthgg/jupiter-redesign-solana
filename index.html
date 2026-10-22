@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jupiter 3.0 — UI/UX Redesign Prototype</title>
+  <style>
+    :root {
+      --bg: #0B0E14;
+      --card-bg: #141A23;
+      --card-border: #232C3B;
+      --sol-purple: #9945FF;
+      --sol-green: #14F195;
+      --text-main: #F3F4F6;
+      --text-muted: #9CA3AF;
+      --accent: #22C55E;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--bg); color: var(--text-main); min-height: 100vh; padding: 24px; display: flex; flex-direction: column; align-items: center; }
+    header { text-align: center; margin-bottom: 28px; max-width: 600px; }
+    h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; background: linear-gradient(135deg, var(--sol-purple), var(--sol-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    p.subtitle { color: var(--text-muted); font-size: 14px; line-height: 1.5; }
+
+    .preview-container { display: flex; gap: 32px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 950px; }
+    .device-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; width: 380px; padding: 20px; box-shadow: 0 12px 30px rgba(0,0,0,0.4); position: relative; }
+    .badge { display: inline-block; padding: 4px 10px; font-size: 11px; font-weight: 600; border-radius: 20px; margin-bottom: 12px; }
+    .badge-before { background: #374151; color: #D1D5DB; }
+    .badge-after { background: rgba(20, 241, 149, 0.15); color: var(--sol-green); border: 1px solid rgba(20, 241, 149, 0.3); }
+
+    .token-box { background: #0F141C; border: 1px solid #1E2633; border-radius: 14px; padding: 14px; margin-bottom: 10px; }
+    .token-row { display: flex; justify-content: space-between; align-items: center; }
+    .token-val { font-size: 22px; font-weight: 700; font-family: monospace; }
+    .token-sym { font-weight: 600; background: #1F2937; padding: 6px 12px; border-radius: 20px; font-size: 13px; display: flex; align-items: center; gap: 6px; }
+
+    .mode-selector { display: flex; gap: 6px; background: #0F141C; padding: 4px; border-radius: 12px; margin: 16px 0; border: 1px solid #1E2633; }
+    .mode-tab { flex: 1; text-align: center; padding: 8px 4px; font-size: 12px; font-weight: 600; border-radius: 8px; cursor: pointer; color: var(--text-muted); }
+    .mode-tab.active { background: var(--sol-purple); color: #fff; box-shadow: 0 2px 8px rgba(153, 69, 255, 0.4); }
+
+    .protection-tray { background: rgba(20, 241, 149, 0.06); border: 1px dashed rgba(20, 241, 149, 0.3); border-radius: 12px; padding: 12px; font-size: 12px; margin-bottom: 16px; }
+    .protection-tray .title { font-weight: 600; color: var(--sol-green); display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+
+    .btn-swap { width: 100%; background: linear-gradient(135deg, var(--sol-purple), #7928CA); color: #fff; border: none; border-radius: 14px; padding: 15px; font-size: 15px; font-weight: 700; cursor: pointer; transition: transform 0.1s; }
+    .btn-swap:active { transform: scale(0.98); }
+
+    .feature-list { margin-top: 16px; font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+    .feature-list li { margin-bottom: 6px; list-style-type: none; display: flex; align-items: center; gap: 8px; }
+    .feature-list li::before { content: "✓"; color: var(--sol-green); font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Jupiter 3.0 Swap Experience</h1>
+    <p class="subtitle">Superteam India Design Bounty Case Study: Eliminating MEV ambiguity, manual slider cognitive load, and recovering stranded SPL rent.</p>
+  </header>
+
+  <div class="preview-container">
+    
+    <!-- BEFORE: LEGACY FRICTION -->
+    <div class="device-card">
+      <span class="badge badge-before">CURRENT INTERFACE (Friction Points)</span>
+      <div class="token-box">
+        <div class="token-row">
+          <span style="font-size:12px;color:#9CA3AF">Selling</span>
+          <span style="font-size:12px;color:#9CA3AF">Balance: 5.42 SOL</span>
+        </div>
+        <div class="token-row" style="margin-top:6px">
+          <span class="token-val">2.5</span>
+          <span class="token-sym">◎ SOL</span>
+        </div>
+      </div>
+
+      <div class="token-box">
+        <div class="token-row">
+          <span style="font-size:12px;color:#9CA3AF">Buying</span>
+          <span style="font-size:12px;color:#9CA3AF">≈ $421.15</span>
+        </div>
+        <div class="token-row" style="margin-top:6px">
+          <span class="token-val">421.15</span>
+          <span class="token-sym">$ USDC</span>
+        </div>
+      </div>
+
+      <div style="font-size:11px; color:#EF4444; background:#371B1B; padding:10px; border-radius:8px; margin: 12px 0;">
+        ⚠️ Priority Fee: 4 sliders buried in settings (Fast, Turbo, Ultra, Custom microlamports). User must guess or risk front-running.
+      </div>
+
+      <ul class="feature-list" style="opacity:0.8">
+        <li style="color:#F87171">No MEV protection breakdown</li>
+        <li style="color:#F87171">Empty token account rent is abandoned ($0.35/account)</li>
+        <li style="color:#F87171">Cryptic error popups on slippage breach</li>
+      </ul>
+    </div>
+
+    <!-- AFTER: JUPITER 3.0 REDESIGN -->
+    <div class="device-card" style="border-color: rgba(153, 69, 255, 0.4);">
+      <span class="badge badge-after">REDESIGNED: JUPITER 3.0</span>
+
+      <div class="token-box">
+        <div class="token-row">
+          <span style="font-size:12px;color:#9CA3AF">You Pay</span>
+          <span style="font-size:12px;color:var(--sol-green);cursor:pointer">MAX: 5.42 SOL</span>
+        </div>
+        <div class="token-row" style="margin-top:6px">
+          <span class="token-val" style="color:#fff">2.5</span>
+          <span class="token-sym" style="background:rgba(153, 69, 255, 0.2); border:1px solid var(--sol-purple)">◎ SOL</span>
+        </div>
+      </div>
+
+      <div class="token-box">
+        <div class="token-row">
+          <span style="font-size:12px;color:#9CA3AF">You Receive (Guaranteed)</span>
+          <span style="font-size:12px;color:#9CA3AF">Route: Orca + Phoenix</span>
+        </div>
+        <div class="token-row" style="margin-top:6px">
+          <span class="token-val" style="color:var(--sol-green)">421.15</span>
+          <span class="token-sym" style="background:rgba(20, 241, 149, 0.2); border:1px solid var(--sol-green)">$ USDC</span>
+        </div>
+      </div>
+
+      <!-- Execution Mode Tabs -->
+      <div class="mode-selector">
+        <div class="mode-tab active">🛡️ Anti-MEV Shield</div>
+        <div class="mode-tab">🚀 Fast Track</div>
+        <div class="mode-tab">🌱 Economy</div>
+      </div>
+
+      <!-- Rent Back Tray -->
+      <div class="protection-tray">
+        <div class="title">✨ Rent-Back Active</div>
+        <div>Empty account closed after swap: <strong>+0.00204 SOL</strong> refunded to wallet.</div>
+      </div>
+
+      <button class="btn-swap">Swap with Jito Shield</button>
+
+      <ul class="feature-list" style="margin-top:14px">
+        <li>Private bundle routing eliminates sandwich attacks</li>
+        <li>Automatic rent reclaim directly offsets transaction costs</li>
+        <li>1-tap human-readable simulation preview</li>
+      </ul>
+    </div>
+
+  </div>
+
+</body>
+</html>
